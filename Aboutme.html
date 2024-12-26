@@ -6,36 +6,51 @@
   <title>Luis G. Lopez-Cotelo - About Me</title>
   
   <!-- Importamos la fuente Roboto desde Google Fonts -->
-   <link
-   rel="stylesheet"
-   href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400&display=swap"
- />
-  <!-- Mantén el enlace a tu hoja de estilos -->
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400&display=swap"
+  />
+  <!-- Enlace a tu hoja de estilos -->
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <div class="container">
     <header>
-      <div class="logo">Luis G. Lopez-Cotelo</div>
+      <div class="logo"><a href="index.html">Luis G. Lopez-Cotelo</a></div>
       <nav>
-        <a href="index.html">Home</a>
         <a href="Words.html">Words</a>
-        <!-- Más enlaces si los necesitas -->
+        <a href="Aboutme.html">About Me</a>
       </nav>
     </header>
 
     <main>
       <section class="hero">
-        <div class="hero-text">
-          <h1>Just a normal guy that loves tech</h1>
-          <ul class="bullets">
-            <li>The main purpose is sharing information about things I like both in english y en español</li>
-            <li>And the things that I like goes from tech to food to videogames...yes it's going to be fun</li>
-            <li>Also I would like to focus on certain topics but still thinking about which ones</li>
-            <li>The book that im currently reading is: <a href="https://www.amazon.com/Por-el-ojo-una-aguja/dp/8416748144">Por el ojo de una aguja - Peter Brown </a></li>
-          </ul>
+        <!-- Contenedor que agrupa texto e imagen -->
+        <div class="hero-container">
+          <div class="hero-text">
+            <h1>Just a normal guy that loves tech</h1>
+            <ul class="bullets">
+              <li>The main purpose is sharing information about things I like both in English y en español.</li>
+              <li>And the things that I like go from tech to food to videogames... yes, it's going to be fun.</li>
+              <li>Also, I would like to focus on certain topics but I'm still thinking about which ones.</li>
+              <li>
+                The book that I'm currently reading is: 
+                <a href="https://www.amazon.com/Por-el-ojo-una-aguja/dp/8416748144" target="_blank">
+                  Por el ojo de una aguja - Peter Brown
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Aquí irá la imagen a la derecha -->
+          <div class="hero-image">
+            <!-- Ajusta la ruta 'mi-foto.jpg' al nombre real de tu imagen -->
+            <img src="Picture1.png" alt="Luis G. Lopez-Cotelo" />
+          </div>
         </div>
-      </main>
+      </section>
+    </main>
+
     <footer>
       <p>© 2024 - Todos los derechos reservados</p>
     </footer>

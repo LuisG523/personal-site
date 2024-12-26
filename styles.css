@@ -1,95 +1,165 @@
-/* Reset básico */
+/* Reset básico */ 
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-/* Contenedor general para centrar y dar márgenes laterales */
+/* Contenedor general */
 .container {
-  max-width: 1200px; /* Ajusta el ancho máximo a tu gusto */
-  margin: 0 auto;    /* Centra horizontalmente */
-  padding: 0 1rem;   /* Pequeño padding lateral */
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
 }
 
-/* Asignamos la fuente Roboto a todo el cuerpo del documento */
+/* Fuente global */
 body {
   font-family: 'Roboto', sans-serif;
-  font-weight: 400; /* Light por defecto */
+  font-weight: 400;
   background-color: #fff;
   color: #333;
   line-height: 1.5;
 }
 
-/* Header: logo + navegación */
+/* Header */
 header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 0;            /* Espacio vertical */
-  border-bottom: 1px solid #ccc; /* Línea debajo del header */
+  padding: 1rem 0;
+  border-bottom: 1px solid #ccc;
 }
 
 /* Logo */
-.logo {
-  font-weight: 300; /* un poco más grueso que 300 */
-  font-size: 1.2rem;
-}
-
-/* Enlaces de navegación */
-nav a {
-  margin-left: 1.5rem;
+.logo a {
+  font-weight: 400;
   text-decoration: none;
   color: #333;
-  font-weight: 300; /* Light */
 }
 
-nav a:hover {
-  text-decoration: underline;
-}
-
-/* Sección "hero" */
-.hero {
+/* Navegación */
+nav {
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding: 2rem 0; /* Espacio vertical */
+  gap: 1rem;
 }
 
-/* Contenido de texto en la hero */
+nav a {
+  font-weight: 100;
+  text-decoration: none;
+  position: relative;
+  color: #6d6d6d;
+  padding-bottom: 2px;
+}
+
+nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 1px;
+  background-color: #808080;
+  transition: width 0.5s ease;
+}
+
+nav a:hover::after {
+  width: 100%;
+}
+
+/* Hero Section */
+.hero {
+  /* Ya no lo usamos para flex: solo dejamos el padding */
+  padding: 2rem 0;
+}
+
+/* Contenedor que agrupa texto (hero-text) e imagen (hero-image) */
+.hero-container {
+  display: flex;         
+  align-items: flex-start;
+  gap: 2rem;            
+  margin-top: 0rem;     
+}
+
+/* Texto dentro del hero */
 .hero-text {
-  flex: 1;
-  margin-right: 2rem;
+  flex: 1;  /* Para ocupar el espacio disponible */
+  /* Eliminamos margin-right, pues usamos 'gap' en .hero-container */
 }
 
-/* Título principal */
 .hero-text h1 {
   font-size: 2rem;
-  font-weight: 100; /* extra fino */
+  font-weight: 100;
   margin-bottom: 1rem;
 }
 
-/* Lista con viñetas */
+/* Lista */
 .bullets {
-  list-style-type: disc;
-  padding-left: 1.5rem;
-  margin-top: 1rem;
-  line-height: 1.8; /* Espacio entre líneas en la lista */
+  list-style: none;
+  padding: 0;
 }
 
-/* Imagen/avatar */
-.hero-illustration img {
-  border-radius: 50%; /* Ejemplo, si quieres que sea circular */
-  display: block;
+.bullets li {
+  position: relative;
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+}
+
+.bullets li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #333;
+}
+
+/* Imagen a la derecha */
+.hero-image img {
+  width: 220px;          /* Ajusta a tu gusto */  
 }
 
 /* Footer */
 footer {
   text-align: center;
-  padding: 1rem 0;            /* Espacio vertical */
-  border-top: 1px solid #ccc; /* Línea encima del footer */
+  padding: 1rem 0;
+  border-top: 1px solid #ccc;
   margin-top: 2rem;
   font-size: 0.9rem;
   color: #666;
   font-weight: 300;
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+  /* Cambiar layout del header */
+  header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .logo {
+    margin-bottom: 1rem; /* Espacio entre el logo y la navegación */
+  }
+
+  nav {
+    flex-direction: column; /* Navegación en columna */
+    gap: 0.5rem; /* Espaciado reducido */
+  }
+
+  /* Cambios en el footer */
+  footer {
+    text-align: center; /* Centra el contenido */
+  }
+
+  /* Ajuste del hero en móviles */
+  .hero-container {
+    flex-direction: column;   /* Apila texto e imagen */
+    align-items: center;      /* Centra horizontalmente */
+    text-align: center;       
+  }
+
+  .hero-image img {
+    width: 180px;             /* Tamaño más pequeño en móvil */
+    margin-top: 1rem;         /* Espacio entre texto e imagen */
+  }
 }
