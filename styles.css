@@ -102,6 +102,14 @@ nav a:hover::after {
   font-weight: 300;
   margin-bottom: 1rem;
 }
+/*Imagenes*/
+.responsive-small {
+  display: block;
+  width: 40%;       /* Imagen será un 40% del contenedor */
+  max-width: 200px; /* Pero nunca más de 200px */
+  margin: 1rem auto; 
+  height: auto;     /* Mantiene la proporción */
+}
 /* Parrafos */
 
 p {
