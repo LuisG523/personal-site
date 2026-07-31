@@ -1,4 +1,4 @@
-/* Reset básico */ 
+/* Reset básico */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -27,14 +27,6 @@ header {
   justify-content: space-between;
   align-items: center;
   padding: 1rem 0;
-  border-bottom: 1px solid #ccc;
-}
-
-/* Logo */
-.logo a {
-  font-weight: 400;
-  text-decoration: none;
-  color: #333;
 }
 
 /* Navegación */
@@ -66,85 +58,26 @@ nav a:hover::after {
   width: 100%;
 }
 
-/* Hero Section */
-.hero {
-  /* Ya no lo usamos para flex: solo dejamos el padding */
-  padding: 2rem 0;
+/* Main: centra la imagen en toda la pantalla */
+.centered {
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* Contenedor que agrupa texto (hero-text) e imagen (hero-image) */
-.hero-container {
-  display: flex;         
-  align-items: flex-start;
-  gap: 2rem;            
-  margin-top: 0rem;     
-}
-
-/* Texto dentro del hero */
-.hero-text {
-  flex: 1;  /* Para ocupar el espacio disponible */
-  /* Eliminamos margin-right, pues usamos 'gap' en .hero-container */
-}
-
-.hero-text h1 {
-  font-size: 2rem;
-  font-weight: 100;
-  margin-bottom: 1rem;
-}
-
-.hero-text h2 {
-  font-size: 1.8rem;
-  font-weight: 400;
-  margin-bottom: 1rem;
-}
-.hero-text h3 {
-  font-size: 1rem;
-  font-weight: 300;
-  margin-bottom: 1rem;
-}
-/*Imagenes*/
-.responsive-small {
+/* Firma con el nombre escrito a mano */
+.nombre-firma {
   display: block;
-  width: 40%;       /* Imagen será un 40% del contenedor */
-  max-width: 200px; /* Pero nunca más de 200px */
-  margin: 1rem auto; 
-  height: auto;     /* Mantiene la proporción */
-}
-/* Parrafos */
-
-p {
-  margin-bottom: 1.5rem; /* Ajusta este valor según desees */
-}
-/* Lista */
-.bullets {
-  list-style: none;
-  padding: 0;
-}
-
-.bullets li {
-  position: relative;
-  padding-left: 1.5rem;
-  margin-bottom: 1rem;
-  margin-top: 1rem;
-}
-
-.bullets li::before {
-  content: "•";
-  position: absolute;
-  left: 0;
-  color: #333;
-}
-
-/* Imagen a la derecha */
-.hero-image img {
-  width: 220px;          /* Ajusta a tu gusto */  
+  width: 100%;
+  max-width: 420px;
+  height: auto;
 }
 
 /* Footer */
 footer {
   text-align: center;
   padding: 1rem 0;
-  border-top: 1px solid #ccc;
   margin-top: 2rem;
   font-size: 0.9rem;
   color: #666;
@@ -153,36 +86,18 @@ footer {
 
 /* Responsividad */
 @media (max-width: 768px) {
-  /* Cambiar layout del header */
   header {
     flex-direction: column;
     align-items: center;
     text-align: center;
   }
 
-  .logo {
-    margin-bottom: 1rem; /* Espacio entre el logo y la navegación */
-  }
-
   nav {
-    flex-direction: column; /* Navegación en columna */
-    gap: 0.5rem; /* Espaciado reducido */
+    flex-direction: column;
+    gap: 0.5rem;
   }
 
-  /* Cambios en el footer */
-  footer {
-    text-align: center; /* Centra el contenido */
-  }
-
-  /* Ajuste del hero en móviles */
-  .hero-container {
-    flex-direction: column;   /* Apila texto e imagen */
-    align-items: center;      /* Centra horizontalmente */
-    text-align: center;       
-  }
-
-  .hero-image img {
-    width: 180px;             /* Tamaño más pequeño en móvil */
-    margin-top: 1rem;         /* Espacio entre texto e imagen */
+  .nombre-firma {
+    max-width: 280px;
   }
 }
