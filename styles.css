@@ -87,8 +87,8 @@ footer {
 /* Easter egg: mini icono */
 .easter-egg {
   position: fixed;
-  bottom: 24px;
-  right: 24px;
+  bottom: 22%;
+  right: 18%;
   width: 56px;
   height: auto;
   cursor: pointer;
@@ -105,8 +105,8 @@ footer {
 /* Easter egg: popup */
 .easter-egg-popup {
   position: fixed;
-  bottom: 90px;
-  right: 24px;
+  bottom: calc(22% + 66px);
+  right: 18%;
   max-width: 240px;
   background-color: #fff;
   border: 1px solid #e0e0e0;
