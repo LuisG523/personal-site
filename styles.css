@@ -84,6 +84,88 @@ footer {
   font-weight: 300;
 }
 
+/* Easter egg: mini icono */
+.easter-egg {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 56px;
+  height: auto;
+  cursor: pointer;
+  opacity: 0.85;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  z-index: 10;
+}
+
+.easter-egg:hover {
+  transform: scale(1.15) rotate(-6deg);
+  opacity: 1;
+}
+
+/* Easter egg: popup */
+.easter-egg-popup {
+  position: fixed;
+  bottom: 90px;
+  right: 24px;
+  max-width: 240px;
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+  padding: 1rem;
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  z-index: 11;
+}
+
+.easter-egg-popup.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.easter-egg-popup h3 {
+  font-weight: 400;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.easter-egg-popup p {
+  font-size: 0.85rem;
+  font-weight: 300;
+  color: #666;
+  margin-bottom: 0.6rem;
+}
+
+.easter-egg-popup a {
+  font-size: 0.85rem;
+  color: #6d6d6d;
+  text-decoration: underline;
+}
+
+.easter-egg-popup a:hover {
+  color: #333;
+}
+
+.easter-egg-close {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  background: none;
+  border: none;
+  font-size: 1rem;
+  color: #999;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.easter-egg-close:hover {
+  color: #333;
+}
+
 /* Responsividad */
 @media (max-width: 768px) {
   header {

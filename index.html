@@ -39,6 +39,21 @@
     <footer>
       <p>© 2026 - Todos los derechos reservados</p>
     </footer>
+
+    <!-- Easter egg: mini icono clickeable -->
+    <img
+      src="assets/discord-pig.png"
+      alt="Discord Chat Exporter"
+      class="easter-egg"
+      onclick="document.getElementById('easter-egg-popup').classList.toggle('visible')"
+    />
+
+    <div id="easter-egg-popup" class="easter-egg-popup">
+      <button class="easter-egg-close" onclick="document.getElementById('easter-egg-popup').classList.remove('visible')">×</button>
+      <h3>Discord Chat Exporter</h3>
+      <p>A Chrome extension that lets you export Discord chat conversations directly from your browser.</p>
+      <a href="https://github.com/LuisG523/discord-dom-exporter" target="_blank" rel="noopener noreferrer">View on GitHub →</a>
+    </div>
   </div>
 </body>
 </html>
