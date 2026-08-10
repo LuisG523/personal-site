@@ -84,11 +84,9 @@ footer {
   font-weight: 300;
 }
 
-/* Easter egg: mini icono */
+/* Easter egg: mini icono (base, compartido) */
 .easter-egg {
   position: fixed;
-  bottom: 22%;
-  right: 18%;
   width: 56px;
   height: auto;
   cursor: pointer;
@@ -102,11 +100,21 @@ footer {
   opacity: 1;
 }
 
-/* Easter egg: popup */
+/* Posición: Discord (esquina inferior derecha) */
+.easter-egg--discord {
+  bottom: 22%;
+  right: 18%;
+}
+
+/* Posición: Android R1 (esquina inferior izquierda, para no solaparse) */
+.easter-egg--android {
+  bottom: 22%;
+  left: 18%;
+}
+
+/* Easter egg: popup (base, compartido) */
 .easter-egg-popup {
   position: fixed;
-  bottom: calc(22% + 66px);
-  right: 18%;
   max-width: 240px;
   background-color: #fff;
   border: 1px solid #e0e0e0;
@@ -126,6 +134,16 @@ footer {
   pointer-events: auto;
 }
 
+.easter-egg-popup--discord {
+  bottom: calc(22% + 66px);
+  right: 18%;
+}
+
+.easter-egg-popup--android {
+  bottom: calc(22% + 66px);
+  left: 18%;
+}
+
 .easter-egg-popup h3 {
   font-weight: 400;
   font-size: 1rem;
@@ -138,6 +156,10 @@ footer {
   font-weight: 300;
   color: #666;
   margin-bottom: 0.6rem;
+}
+
+.easter-egg-popup p:last-child {
+  margin-bottom: 0;
 }
 
 .easter-egg-popup a {
@@ -181,5 +203,36 @@ footer {
 
   .nombre-firma {
     max-width: 280px;
+  }
+
+  .easter-egg {
+    width: 44px;
+  }
+
+  .easter-egg--discord,
+  .easter-egg--android {
+    bottom: 12%;
+  }
+
+  .easter-egg--discord {
+    right: 8%;
+  }
+
+  .easter-egg--android {
+    left: 8%;
+  }
+
+  .easter-egg-popup--discord,
+  .easter-egg-popup--android {
+    bottom: calc(12% + 54px);
+    max-width: 200px;
+  }
+
+  .easter-egg-popup--discord {
+    right: 8%;
+  }
+
+  .easter-egg-popup--android {
+    left: 8%;
   }
 }
