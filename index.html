@@ -22,7 +22,7 @@
     href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400&display=swap"
   />
   <!-- Enlace a tu hoja de estilos -->
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css?v=3" />
 </head>
 <body>
   <div class="container">
@@ -66,6 +66,21 @@
     <div id="easter-egg-popup-android" class="easter-egg-popup easter-egg-popup--android">
       <button class="easter-egg-close" onclick="document.getElementById('easter-egg-popup-android').classList.remove('visible')">×</button>
       <p>Proud owner of an Android R1 😄</p>
+    </div>
+
+    <!-- Easter egg: LLM Trading Bot -->
+    <img
+      src="assets/trading-bot.png"
+      alt="LLM Trading Bot"
+      class="easter-egg easter-egg--trading"
+      onclick="document.getElementById('easter-egg-popup-trading').classList.toggle('visible')"
+    />
+
+    <div id="easter-egg-popup-trading" class="easter-egg-popup easter-egg-popup--trading">
+      <button class="easter-egg-close" onclick="document.getElementById('easter-egg-popup-trading').classList.remove('visible')">×</button>
+      <h3>LLM Trading Bot</h3>
+      <p>An autonomous crypto trading agent where an LLM makes every call. It reads price action, the Fear &amp; Greed Index, macro events and news, places limit orders with exchange-native stop-losses, and reviews its own trade history to rethink its strategy every week.</p>
+      <p>Ran in production on Kraken with real money, until exchange fees started eating the profits. Retired with honours 🫡</p>
     </div>
   </div>
 </body>

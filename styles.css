@@ -112,6 +112,13 @@ footer {
   left: 18%;
 }
 
+/* Posición: Trading bot (esquina superior derecha) */
+.easter-egg--trading {
+  top: 18%;
+  right: 18%;
+  image-rendering: pixelated;
+}
+
 /* Easter egg: popup (base, compartido) */
 .easter-egg-popup {
   position: fixed;
@@ -142,6 +149,12 @@ footer {
 .easter-egg-popup--android {
   bottom: calc(22% + 66px);
   left: 18%;
+}
+
+.easter-egg-popup--trading {
+  top: calc(18% + 70px);
+  right: 18%;
+  max-width: 280px;
 }
 
 .easter-egg-popup h3 {
@@ -234,5 +247,16 @@ footer {
 
   .easter-egg-popup--android {
     left: 8%;
+  }
+
+  .easter-egg--trading {
+    top: 12%;
+    right: 8%;
+  }
+
+  .easter-egg-popup--trading {
+    top: calc(12% + 58px);
+    right: 8%;
+    max-width: 220px;
   }
 }
