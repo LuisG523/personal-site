@@ -27,10 +27,6 @@ curl -X POST https://libro-visitas.luisgonlocot.workers.dev/messages -H "Content
 - LLM Trading Bot: An autonomous crypto trading agent where an LLM made every call. It read price action, the Fear & Greed Index, macro events and news, placed limit orders with exchange-native stop-losses, and reviewed its own trade history to rethink its strategy every week. It ran in production on Kraken with real money until exchange fees started eating the profits. Retired.
 - Android R1: Proud owner of an Android R1.
 
-## Contact
-
-- [GitHub: LuisG523](https://github.com/LuisG523)
-
 ## About this file
 
 - Format: [llms.txt](https://llmstxt.org)
