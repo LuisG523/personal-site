@@ -201,6 +201,100 @@ footer {
   color: #333;
 }
 
+/* Interruptor humano / agente */
+nav {
+  margin-left: auto;
+}
+
+.view-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+  font-weight: 100;
+  color: #6d6d6d;
+}
+
+.view-toggle button {
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: 100;
+  color: #6d6d6d;
+  background: none;
+  border: none;
+  padding: 0 0 2px;
+  cursor: pointer;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.3s ease, color 0.3s ease;
+}
+
+.view-toggle button:hover {
+  border-bottom-color: #808080;
+}
+
+.view-toggle button[aria-pressed="true"] {
+  font-weight: 400;
+  color: #333;
+  border-bottom-color: #333;
+}
+
+/* Vista de agente: la página tal y como la recibe una máquina */
+.agent-view {
+  display: none;
+  min-height: 80vh;
+  padding: 1rem 0 2rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: #333;
+}
+
+.agent-view pre {
+  font-family: inherit;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.agent-view__block {
+  border: 1px solid #e0e0e0;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.agent-view__request {
+  color: #808080;
+  margin-bottom: 0.75rem;
+}
+
+.agent-view__llms {
+  border-color: #333;
+}
+
+.agent-view__back {
+  font-family: inherit;
+  font-size: 0.85rem;
+  background: none;
+  border: none;
+  color: #6d6d6d;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+}
+
+.agent-view__back:hover {
+  color: #333;
+}
+
+body.mode-agent .agent-view {
+  display: block;
+}
+
+body.mode-agent main,
+body.mode-agent .easter-egg,
+body.mode-agent .easter-egg-popup {
+  display: none;
+}
+
 /* Enlace "Cookies" del pie */
 footer a {
   color: inherit;
@@ -281,6 +375,11 @@ footer a:hover {
   nav {
     flex-direction: column;
     gap: 0.5rem;
+    margin: 0 auto;
+  }
+
+  .agent-view {
+    font-size: 0.78rem;
   }
 
   .nombre-firma {
