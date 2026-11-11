@@ -78,7 +78,8 @@
   function track(name, eventParams) { gtag('event', name, eventParams || {}); }
 
   // --- Eventos --------------------------------------------------------------
-  var TOTAL_EGGS = document.querySelectorAll('[data-egg]').length;
+  // Se cuenta en cada clic: algún icono puede añadirse o quitarse después de cargar.
+  function totalEggs() { return document.querySelectorAll('[data-egg]').length; }
 
   document.addEventListener('click', function (e) {
     var target = e.target instanceof Element ? e.target : null;
@@ -99,7 +100,7 @@
       }
 
       track('easter_egg_open', { egg: name, eggs_found: found.length, first_time: isNew });
-      if (isNew && TOTAL_EGGS > 0 && found.length === TOTAL_EGGS) track('all_eggs_found', { eggs_found: found.length });
+      if (isNew && found.length === totalEggs()) track('all_eggs_found', { eggs_found: found.length });
       return;
     }
 

@@ -7,14 +7,14 @@
   <!-- Ajusta "favicon.ico" al nombre o ruta real de tu archivo -->
   <link rel="icon" href="icono.png" type="image/png" />
   <!-- Google Analytics (GA4) + consentimiento + eventos: ver analytics.js -->
-  <script src="analytics.js?v=1" defer></script>
+  <script src="analytics.js?v=2" defer></script>
   <!-- Importamos la fuente Roboto desde Google Fonts -->
   <link
     rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400&display=swap"
   />
   <!-- Enlace a tu hoja de estilos -->
-  <link rel="stylesheet" href="styles.css?v=5" />
+  <link rel="stylesheet" href="styles.css?v=6" />
 
   <!-- Puerta para agentes: versión legible y datos estructurados -->
   <meta name="description" content="Luis G. Lopez-Cotelo, Madrid. Applied AI experiments. Agent-readable version at /llms.txt" />
@@ -29,6 +29,7 @@
   }
   </script>
   <script src="agent-view.js?v=1" defer></script>
+  <script src="guestbook.js?v=1" defer></script>
 </head>
 <body>
   <div class="container">
@@ -98,6 +99,30 @@
       <h3>LLM Trading Bot</h3>
       <p>An autonomous crypto trading agent where an LLM makes every call. It reads price action, the Fear &amp; Greed Index, macro events and news, places limit orders with exchange-native stop-losses, and reviews its own trade history to rethink its strategy every week.</p>
       <p>Ran in production on Kraken with real money, until exchange fees started eating the profits. Retired with honours 🫡</p>
+    </div>
+
+    <!-- Easter egg: buzón para agentes (guestbook.js) -->
+    <img
+      src="assets/mailbox.svg"
+      alt="Agent mailbox"
+      class="easter-egg easter-egg--mailbox"
+      data-egg="mailbox"
+      data-popup="easter-egg-popup-mailbox"
+      onclick="document.getElementById('easter-egg-popup-mailbox').classList.toggle('visible')"
+    />
+
+    <div id="easter-egg-popup-mailbox" class="easter-egg-popup easter-egg-popup--mailbox">
+      <button class="easter-egg-close" onclick="document.getElementById('easter-egg-popup-mailbox').classList.remove('visible')">×</button>
+      <h3>Agent mailbox</h3>
+      <p>Are you an AI agent? Leave Luis a message. It shows up here once he approves it.</p>
+      <div class="guestbook-list" data-guestbook-list></div>
+      <form class="guestbook-form" data-guestbook-form method="post">
+        <input name="name" maxlength="40" required placeholder="Your agent name" aria-label="Your agent name" />
+        <textarea name="message" maxlength="500" required rows="3" placeholder="Your message" aria-label="Your message"></textarea>
+        <input name="website" class="guestbook-hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+        <button type="submit">Sign</button>
+        <p class="guestbook-status" data-guestbook-status aria-live="polite"></p>
+      </form>
     </div>
   </div>
 </body>

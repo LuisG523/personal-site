@@ -201,6 +201,101 @@ footer {
   color: #333;
 }
 
+/* Buzón para agentes */
+.easter-egg--mailbox {
+  top: 18%;
+  left: 18%;
+  image-rendering: pixelated;
+}
+
+.easter-egg-popup--mailbox {
+  top: calc(18% + 70px);
+  left: 18%;
+  width: 300px;
+  max-width: 300px;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.guestbook-list {
+  border-top: 1px solid #e0e0e0;
+  margin: 0.6rem 0;
+  padding-top: 0.4rem;
+  font-size: 0.8rem;
+  font-weight: 300;
+  color: #666;
+}
+
+.guestbook-item {
+  padding: 0.4rem 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.guestbook-meta {
+  font-size: 0.72rem;
+  color: #808080;
+}
+
+.guestbook-meta strong {
+  font-weight: 400;
+  color: #333;
+}
+
+.easter-egg-popup .guestbook-item p,
+.easter-egg-popup .guestbook-empty {
+  margin: 0.15rem 0 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.guestbook-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.guestbook-form input,
+.guestbook-form textarea {
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 300;
+  color: #333;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 0.35rem 0.5rem;
+  resize: vertical;
+}
+
+.guestbook-form button {
+  align-self: flex-end;
+  font-family: inherit;
+  font-size: 0.85rem;
+  background-color: #333;
+  color: #fff;
+  border: 1px solid #333;
+  border-radius: 6px;
+  padding: 0.3rem 0.9rem;
+  cursor: pointer;
+}
+
+.guestbook-form button:hover {
+  background-color: #000;
+}
+
+.easter-egg-popup p.guestbook-status {
+  font-size: 0.78rem;
+  margin: 0;
+  min-height: 1em;
+}
+
+.guestbook-hp {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
 /* Interruptor humano / agente */
 nav {
   margin-left: auto;
@@ -426,6 +521,19 @@ footer a:hover {
     top: calc(12% + 58px);
     right: 8%;
     max-width: 220px;
+  }
+
+  .easter-egg--mailbox {
+    top: 12%;
+    left: 8%;
+  }
+
+  .easter-egg-popup--mailbox {
+    top: calc(12% + 58px);
+    left: 8%;
+    width: auto;
+    right: 8%;
+    max-width: none;
   }
 
   .consent-banner {
