@@ -201,6 +201,75 @@ footer {
   color: #333;
 }
 
+/* Enlace "Cookies" del pie */
+footer a {
+  color: inherit;
+  text-decoration: underline;
+}
+
+footer a:hover {
+  color: #333;
+}
+
+/* Banner de consentimiento (mismo lenguaje visual que los popups) */
+.consent-banner {
+  position: fixed;
+  left: 50%;
+  bottom: 1.5rem;
+  transform: translateX(-50%);
+  width: calc(100% - 2rem);
+  max-width: 440px;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+  padding: 0.85rem 1rem;
+  z-index: 20;
+}
+
+.consent-banner p {
+  flex: 1;
+  font-size: 0.85rem;
+  font-weight: 300;
+  color: #666;
+}
+
+.consent-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.consent-banner button {
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 400;
+  background: none;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 0.3rem 0.8rem;
+  color: #333;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.consent-banner button:hover {
+  border-color: #333;
+}
+
+.consent-banner button.primary {
+  background-color: #333;
+  border-color: #333;
+  color: #fff;
+}
+
+.consent-banner button.primary:hover {
+  background-color: #000;
+}
+
 /* Responsividad */
 @media (max-width: 768px) {
   header {
@@ -258,5 +327,16 @@ footer {
     top: calc(12% + 58px);
     right: 8%;
     max-width: 220px;
+  }
+
+  .consent-banner {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.6rem;
+    bottom: 1rem;
+  }
+
+  .consent-actions {
+    justify-content: flex-end;
   }
 }

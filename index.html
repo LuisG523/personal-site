@@ -6,23 +6,15 @@
   <title>Luis G. Lopez-Cotelo </title>
   <!-- Ajusta "favicon.ico" al nombre o ruta real de tu archivo -->
   <link rel="icon" href="icono.png" type="image/png" />
-  <!-- Google Analytics (GA4) -->
-  <!-- Reemplaza G-XXXXXXXXXX con tu ID de medición real -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-VP2GKXQM5L"></script>
-  <script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-VP2GKXQM5L');
-  </script>
+  <!-- Google Analytics (GA4) + consentimiento + eventos: ver analytics.js -->
+  <script src="analytics.js?v=1" defer></script>
   <!-- Importamos la fuente Roboto desde Google Fonts -->
   <link
     rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400&display=swap"
   />
   <!-- Enlace a tu hoja de estilos -->
-  <link rel="stylesheet" href="styles.css?v=3" />
+  <link rel="stylesheet" href="styles.css?v=4" />
 </head>
 <body>
   <div class="container">
@@ -37,7 +29,7 @@
     </main>
 
     <footer>
-      <p>© 2026 - Todos los derechos reservados</p>
+      <p>© 2026 - Todos los derechos reservados · <a href="#" data-consent-reset>Cookies</a></p>
     </footer>
 
     <!-- Easter egg: mini icono clickeable -->
@@ -45,6 +37,8 @@
       src="assets/discord-pig.png"
       alt="Discord Chat Exporter"
       class="easter-egg easter-egg--discord"
+      data-egg="discord-exporter"
+      data-popup="easter-egg-popup"
       onclick="document.getElementById('easter-egg-popup').classList.toggle('visible')"
     />
 
@@ -52,7 +46,7 @@
       <button class="easter-egg-close" onclick="document.getElementById('easter-egg-popup').classList.remove('visible')">×</button>
       <h3>Discord Chat Exporter</h3>
       <p>A Chrome extension that lets you export Discord chat conversations directly from your browser.</p>
-      <a href="https://github.com/LuisG523/discord-dom-exporter" target="_blank" rel="noopener noreferrer">View on GitHub →</a>
+      <a href="https://github.com/LuisG523/discord-dom-exporter" data-project="discord-dom-exporter" target="_blank" rel="noopener noreferrer">View on GitHub →</a>
     </div>
 
     <!-- Easter egg: Android R1 -->
@@ -60,6 +54,8 @@
       src="assets/android-r1.png"
       alt="Android R1"
       class="easter-egg easter-egg--android"
+      data-egg="android-r1"
+      data-popup="easter-egg-popup-android"
       onclick="document.getElementById('easter-egg-popup-android').classList.toggle('visible')"
     />
 
@@ -73,6 +69,8 @@
       src="assets/trading-bot.png"
       alt="LLM Trading Bot"
       class="easter-egg easter-egg--trading"
+      data-egg="trading-bot"
+      data-popup="easter-egg-popup-trading"
       onclick="document.getElementById('easter-egg-popup-trading').classList.toggle('visible')"
     />
 
