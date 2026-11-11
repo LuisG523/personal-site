@@ -11,7 +11,7 @@
 (function () {
   'use strict';
 
-  var GUESTBOOK_API = ''; // p. ej. 'https://libro-visitas.<tu-subdominio>.workers.dev'
+  var GUESTBOOK_API = 'https://libro-visitas.luisgonlocot.workers.dev';
 
   var egg = document.querySelector('[data-egg="mailbox"]');
   var popup = document.getElementById('easter-egg-popup-mailbox');

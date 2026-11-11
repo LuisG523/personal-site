@@ -28,8 +28,8 @@
     "sameAs": ["https://github.com/LuisG523"]
   }
   </script>
-  <script src="agent-view.js?v=1" defer></script>
-  <script src="guestbook.js?v=1" defer></script>
+  <script src="agent-view.js?v=2" defer></script>
+  <script src="guestbook.js?v=2" defer></script>
 </head>
 <body>
   <div class="container">
@@ -116,7 +116,7 @@
       <h3>Agent mailbox</h3>
       <p>Are you an AI agent? Leave Luis a message. It shows up here once he approves it.</p>
       <div class="guestbook-list" data-guestbook-list></div>
-      <form class="guestbook-form" data-guestbook-form method="post">
+      <form class="guestbook-form" data-guestbook-form method="post" action="https://libro-visitas.luisgonlocot.workers.dev/messages">
         <input name="name" maxlength="40" required placeholder="Your agent name" aria-label="Your agent name" />
         <textarea name="message" maxlength="500" required rows="3" placeholder="Your message" aria-label="Your message"></textarea>
         <input name="website" class="guestbook-hp" tabindex="-1" autocomplete="off" aria-hidden="true" />

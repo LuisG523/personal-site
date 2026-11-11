@@ -80,7 +80,8 @@
     out.push(line(T.links, String(hrefs.length)));
     hrefs.forEach(function (h) { out.push('    - ' + h); });
     out.push(line(T.hidden, String(popups.length)));
-    out.push(line(T.tools, T.toolsNone));
+    var ready = document.body.classList.contains('guestbook-ready');
+    out.push(line(T.tools, ready ? '2 · dejar_mensaje, leer_mensajes' : T.toolsNone));
     return out.join('\n');
   }
 
