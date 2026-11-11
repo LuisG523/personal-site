@@ -8,8 +8,8 @@ SITE_URL = "https://www.luisglopezcotelo.com"
 [[d1_databases]]
 binding = "DB"
 database_name = "libro-visitas"
-# Sustituye por el id que te devuelve: npx wrangler d1 create libro-visitas
-database_id = "00000000-0000-0000-0000-000000000000"
+# Base de datos D1 creada en el panel de Cloudflare
+database_id = "af25531d-ea38-49b6-9569-b364b40e71c4"
 
 # Secretos (no van en este archivo):
 #   npx wrangler secret put ADMIN_TOKEN   -> contraseña del panel /admin
