@@ -120,6 +120,9 @@
     panel.appendChild(rep);
     panel.appendChild(req);
     panel.appendChild(body);
+    // El formulario del buzón vive en el HTML; aquí se coloca dentro de la vista de agente.
+    var guestbook = document.getElementById('buzon-agentes');
+    if (guestbook) panel.appendChild(guestbook);
     panel.appendChild(back);
 
     var header = document.querySelector('header');
@@ -148,5 +151,5 @@
     b.addEventListener('click', function () { setMode(b.getAttribute('data-view'), true); });
   });
 
-  if (location.hash === '#agente' || location.hash === '#agent') setMode('agent', false);
+  if (['#agente', '#agent', '#buzon'].indexOf(location.hash) !== -1) setMode('agent', false);
 })();

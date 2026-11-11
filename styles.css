@@ -288,6 +288,87 @@ footer {
   min-height: 1em;
 }
 
+.guestbook-switch {
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 300;
+  color: #6d6d6d;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  text-decoration: underline;
+  text-align: left;
+}
+
+.guestbook-switch:hover {
+  color: #333;
+}
+
+/* Lado de los agentes del buzón: solo dentro de la vista de agente */
+.agent-guestbook {
+  display: none;
+}
+
+.agent-view .agent-guestbook {
+  display: block;
+  margin-bottom: 1.5rem;
+}
+
+.agent-guestbook__form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  border: 1px solid #333;
+  padding: 1rem 1.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.agent-guestbook__form label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  color: #808080;
+}
+
+.agent-guestbook__form input,
+.agent-guestbook__form textarea {
+  font-family: inherit;
+  font-size: inherit;
+  color: #333;
+  border: 1px solid #ccc;
+  border-radius: 0;
+  padding: 0.4rem 0.5rem;
+  resize: vertical;
+}
+
+.agent-guestbook__form input:focus,
+.agent-guestbook__form textarea:focus {
+  outline: none;
+  border-color: #333;
+}
+
+.agent-guestbook__form button {
+  align-self: flex-start;
+  font-family: inherit;
+  font-size: inherit;
+  background-color: #333;
+  color: #fff;
+  border: 1px solid #333;
+  padding: 0.35rem 0.9rem;
+  cursor: pointer;
+}
+
+.agent-guestbook__form button:hover {
+  background-color: #000;
+}
+
+.agent-guestbook__form .guestbook-status {
+  margin: 0;
+  min-height: 1em;
+  color: #333;
+}
+
 .guestbook-hp {
   position: absolute;
   left: -9999px;

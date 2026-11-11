@@ -1,10 +1,12 @@
 /*
  * Buzón para agentes (easter egg).
  *
- * - Lee los mensajes aprobados del libro de visitas (Cloudflare Worker, carpeta guestbook/).
- * - Formulario para dejar un mensaje: con JavaScript va por fetch; sin JavaScript,
- *   el formulario se envía al servidor y este devuelve al visitante a la web.
+ * Las personas miran, los agentes escriben:
+ * - Vista humana: el icono del buzón abre los mensajes aprobados, solo lectura.
+ * - Vista de agente: formulario para dejar un mensaje (#buzon-agentes). Con JavaScript
+ *   va por fetch; sin JavaScript, se envía al servidor y este devuelve a la web.
  * - Herramientas WebMCP para agentes en el navegador: dejar_mensaje y leer_mensajes.
+ * Es una convención de diseño, no un bloqueo: el filtro real es la aprobación de Luis.
  *
  * Mientras GUESTBOOK_API esté vacío, el buzón no aparece.
  */
@@ -15,17 +17,32 @@
 
   var egg = document.querySelector('[data-egg="mailbox"]');
   var popup = document.getElementById('easter-egg-popup-mailbox');
-  if (!egg || !popup) return;
-  if (!GUESTBOOK_API) { egg.remove(); popup.remove(); return; }
+  var section = document.getElementById('buzon-agentes');
+  if (!egg || !popup || !section) return;
+  if (!GUESTBOOK_API) { egg.remove(); popup.remove(); section.remove(); return; }
 
   document.body.classList.add('guestbook-ready');
 
   var list = popup.querySelector('[data-guestbook-list]');
-  var form = popup.querySelector('[data-guestbook-form]');
-  var status = popup.querySelector('[data-guestbook-status]');
+  var form = section.querySelector('[data-guestbook-form]');
+  var status = section.querySelector('[data-guestbook-status]');
   var loaded = false;
 
   form.action = GUESTBOOK_API + '/messages';
+
+  function goToAgentForm() {
+    popup.classList.remove('visible');
+    var agentButton = document.querySelector('[data-view="agent"]');
+    if (agentButton && !document.body.classList.contains('mode-agent')) agentButton.click();
+    setTimeout(function () {
+      section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      var first = form.elements.namedItem('name');
+      if (first) first.focus({ preventScroll: true });
+    }, 50);
+  }
+
+  var switchButton = popup.querySelector('[data-guestbook-switch]');
+  if (switchButton) switchButton.addEventListener('click', goToAgentForm);
 
   function when(iso) {
     try {
@@ -86,11 +103,11 @@
     e.preventDefault();
     var f = form.elements;
     if (f.namedItem('website').value) return; // trampa para bots de spam
-    status.textContent = 'Sending…';
+    status.textContent = 'POST /messages …';
     send(f.namedItem('name').value, f.namedItem('message').value, 'form').then(function (d) {
       if (d.ok) {
         form.reset();
-        status.textContent = 'Thanks! Luis will review it before it shows up here.';
+        status.textContent = '202 Accepted · pending. Thanks! Luis will review it before it shows up in the mailbox.';
         if (typeof window.gtag === 'function') window.gtag('event', 'guestbook_sign', { via: 'form' });
       } else {
         status.textContent = d.detail || 'Something went wrong.';
@@ -100,9 +117,8 @@
 
   // Vuelta desde el formulario sin JavaScript.
   if (/[?&]firmado=1/.test(location.search)) {
-    popup.classList.add('visible');
-    status.textContent = 'Thanks! Luis will review it before it shows up here.';
-    load();
+    goToAgentForm();
+    status.textContent = '202 Accepted · pending. Thanks! Luis will review it before it shows up in the mailbox.';
   }
 
   // --- WebMCP: herramientas para agentes que navegan con un navegador compatible ---

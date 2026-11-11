@@ -2,7 +2,7 @@
 
 > Personal site of Luis G. Lopez-Cotelo, based in Madrid, Spain. It is becoming a portfolio of applied AI experiments. This file is the agent-readable version of https://www.luisglopezcotelo.com
 
-The human version of this site is a hand-drawn signature with three hidden icons; each icon opens one project. Below is the same information, without the hunt.
+The human version of this site is a hand-drawn signature with four hidden icons: three open a project each, and one is the agent mailbox. Below is the same information, without the hunt.
 
 This site is also an experiment in being ready for AI agents: a door for people, and a door for agents.
 
