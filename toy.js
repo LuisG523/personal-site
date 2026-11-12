@@ -8,6 +8,8 @@
  *   al completar los cuatro, la firma lo celebra.
  * - Los choques sueltan chispas y los iconos se aplastan un poco contra los bordes.
  * - Si nadie toca nada, un icono se menea una vez para avisar de que se puede jugar.
+ * - Ranking: se mide el recorrido del icono lanzado (100 px = 1 m) y las mejores
+ *   marcas se guardan con iniciales de 3 letras en el servidor del buzón (/scores).
  * - "↺ recolocar" devuelve cada icono a su sitio.
  * - Con "reducir movimiento" activado en el sistema, se arrastra pero no hay inercia.
  *
@@ -20,6 +22,11 @@
   if (!icons.length || !window.requestAnimationFrame) return;
 
   var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var SCORES_API = 'https://libro-visitas.luisgonlocot.workers.dev';
+  var PX_PER_METER = 100;
+  var MIN_THROW_SPEED = 300; // px/s: por debajo no cuenta como lanzamiento
+  var BOARD_SIZE = 10;
 
   var FRICTION = 2.2;      // frenado por segundo (más alto = se paran antes)
   var BOUNCE = 0.78;       // energía que conservan al rebotar
@@ -40,6 +47,18 @@
   var completed = false;
   var thrownOnce = false;
   var touched = false;
+  var bestEl = null;
+  var boardButton = null;
+  var board = null;
+  var scores = null;          // ranking cargado del servidor (null = sin cargar)
+  var pendingScore = 0;       // marca esperando iniciales
+  var best = Number(store('get', 'lglc_best')) || 0;
+
+  function store(op, key, val) {
+    try { return op === 'get' ? localStorage.getItem(key) : localStorage.setItem(key, val); } catch (e) { return null; }
+  }
+
+  function meters(px) { return (px / PX_PER_METER).toFixed(1) + ' m'; }
 
   function track(name, params) {
     if (typeof window.gtag === 'function') window.gtag('event', name, params || {});
@@ -66,7 +85,7 @@
       el.classList.add('toy-active');
       return {
         el: el, x: r.left, y: r.top, w: r.width, h: r.height,
-        r: Math.max(r.width, r.height) / 2, vx: 0, vy: 0, spin: 0, sx: 1, sy: 1,
+        r: Math.max(r.width, r.height) / 2, vx: 0, vy: 0, spin: 0, sx: 1, sy: 1, throwing: false, throwDist: 0,
         homeX: r.left, homeY: r.top, homeStyle: home, moved: false, settled: true
       };
     });
@@ -120,15 +139,194 @@
     scoreEl = document.createElement('span');
     scoreEl.className = 'toy-score';
     scoreEl.setAttribute('aria-live', 'polite');
+    bestEl = document.createElement('span');
+    bestEl.className = 'toy-best';
+    boardButton = document.createElement('button');
+    boardButton.type = 'button';
+    boardButton.className = 'toy-reset toy-board-toggle';
+    boardButton.textContent = '🏆 ranking';
+    boardButton.setAttribute('aria-expanded', 'false');
+    boardButton.addEventListener('click', function () { toggleBoard(); });
     hud.appendChild(resetButton);
     hud.appendChild(scoreEl);
+    hud.appendChild(bestEl);
+    hud.appendChild(document.createTextNode(' · '));
+    hud.appendChild(boardButton);
     document.body.appendChild(hud);
     updateScore();
+    updateBest();
+  }
+
+  function updateBest() {
+    if (bestEl) bestEl.textContent = best ? ' · tu mejor tiro: ' + meters(best) : '';
+  }
+
+  // --- Ranking -------------------------------------------------------------------
+
+  function loadScores() {
+    return fetch(SCORES_API + '/scores', { cache: 'no-store' })
+      .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+      .then(function (d) { scores = d.scores || []; return scores; });
+  }
+
+  function qualifies(px) {
+    if (!scores) return true; // sin datos, que lo decida el servidor
+    if (scores.length < BOARD_SIZE) return true;
+    return px > scores[scores.length - 1].distance;
+  }
+
+  function buildBoard() {
+    board = document.createElement('section');
+    board.className = 'toy-board';
+    board.setAttribute('aria-label', 'Ranking del tiro más largo');
+    document.body.appendChild(board);
+  }
+
+  function toggleBoard(forceOpen) {
+    if (!board) buildBoard();
+    var open = forceOpen === true || !board.classList.contains('visible');
+    board.classList.toggle('visible', open);
+    if (boardButton) boardButton.setAttribute('aria-expanded', String(open));
+    if (open) {
+      renderBoard();
+      loadScores().then(renderBoard).catch(function () { renderBoard(true); });
+      track('toy_board_open');
+    }
+  }
+
+  function renderBoard(failed, highlight) {
+    if (!board) return;
+    board.textContent = '';
+    var close = document.createElement('button');
+    close.type = 'button';
+    close.className = 'easter-egg-close';
+    close.textContent = '×';
+    close.addEventListener('click', function () { toggleBoard(); });
+    var title = document.createElement('h3');
+    title.textContent = 'Tiro más largo';
+    var hint = document.createElement('p');
+    hint.className = 'toy-board-hint';
+    hint.textContent = 'Lanza un icono: cuenta todo lo que recorre, rebotes incluidos.';
+    board.appendChild(close);
+    board.appendChild(title);
+    board.appendChild(hint);
+
+    if (pendingScore) board.appendChild(entryForm());
+
+    if (failed === true && !scores) {
+      board.appendChild(note('El ranking no está disponible ahora mismo.'));
+      return;
+    }
+    if (!scores) { board.appendChild(note('Cargando…')); return; }
+    if (!scores.length) { board.appendChild(note('Aún no hay marcas. ¡Estrénalo!')); return; }
+
+    var mine = store('get', 'lglc_initials');
+    var list = document.createElement('ol');
+    list.className = 'toy-board-list';
+    scores.forEach(function (row) {
+      var li = document.createElement('li');
+      if (row.initials === (highlight || mine)) li.className = 'mine';
+      var who = document.createElement('span');
+      who.textContent = row.initials;
+      var dist = document.createElement('span');
+      dist.textContent = meters(row.distance);
+      li.appendChild(who);
+      li.appendChild(dist);
+      list.appendChild(li);
+    });
+    board.appendChild(list);
+  }
+
+  function note(text) {
+    var p = document.createElement('p');
+    p.className = 'toy-board-note';
+    p.textContent = text;
+    return p;
+  }
+
+  function entryForm() {
+    var form = document.createElement('form');
+    form.className = 'toy-board-entry';
+    var label = document.createElement('label');
+    label.textContent = '¡' + meters(pendingScore) + '! Tus iniciales:';
+    var input = document.createElement('input');
+    input.name = 'initials';
+    input.maxLength = 3;
+    input.required = true;
+    input.autocomplete = 'off';
+    input.pattern = '[A-Za-z0-9]{3}';
+    input.placeholder = 'AAA';
+    input.value = store('get', 'lglc_initials') || '';
+    input.addEventListener('input', function () { input.value = input.value.replace(/[^a-z0-9]/gi, '').toUpperCase(); });
+    var save = document.createElement('button');
+    save.type = 'submit';
+    save.textContent = 'Guardar';
+    form.appendChild(label);
+    form.appendChild(input);
+    form.appendChild(save);
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (!/^[A-Z0-9]{3}$/.test(input.value)) { input.focus(); return; }
+      store('set', 'lglc_initials', input.value);
+      var px = pendingScore;
+      pendingScore = 0;
+      submitScore(input.value, px);
+    });
+    setTimeout(function () { input.focus({ preventScroll: true }); }, 30);
+    return form;
+  }
+
+  function submitScore(initials, px) {
+    fetch(SCORES_API + '/scores', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ initials: initials, distance: px, device: window.innerWidth < 600 ? 'mobile' : 'desktop' })
+    })
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        if (!d.ok) throw new Error(d.error || 'error');
+        track('toy_score_saved', { rank: d.rank });
+        return loadScores();
+      })
+      .then(function () { toggleBoard(true); renderBoard(false, initials); })
+      .catch(function () { renderBoard(true); });
+  }
+
+  // Cuando un icono lanzado se para: etiqueta con la distancia y, si toca, al ranking.
+  function finishThrow(b) {
+    var px = Math.round(b.throwDist);
+    b.throwing = false;
+    b.throwDist = 0;
+    if (px < PX_PER_METER) return;
+    var record = px > best;
+    floatLabel(b, meters(px) + (record && best ? ' · ¡récord!' : ''));
+    track('toy_distance', { meters: Math.round(px / PX_PER_METER * 10) / 10 });
+    if (!record) return;
+    best = px;
+    store('set', 'lglc_best', String(px));
+    updateBest();
+    var check = scores ? Promise.resolve(scores) : loadScores();
+    check.then(function () {
+      if (!qualifies(px)) return;
+      var initials = store('get', 'lglc_initials');
+      if (initials) submitScore(initials, px);
+      else { pendingScore = px; toggleBoard(true); }
+    }).catch(function () { /* sin ranking: la marca queda solo en este navegador */ });
+  }
+
+  function floatLabel(b, text) {
+    var label = document.createElement('span');
+    label.className = 'toy-distance';
+    label.textContent = text;
+    label.style.left = (b.x + b.w / 2) + 'px';
+    label.style.top = b.y + 'px';
+    label.addEventListener('animationend', function () { label.remove(); });
+    document.body.appendChild(label);
   }
 
   function resetAll() {
     bodies.forEach(function (b) {
-      b.vx = b.vy = 0; b.spin = 0; b.sx = b.sy = 1; b.moved = false; b.settled = true;
+      b.vx = b.vy = 0; b.spin = 0; b.sx = b.sy = 1; b.moved = false; b.settled = true; b.throwing = false;
       b.el.classList.remove('toy-active');
       b.el.style.transform = '';
       b.el.style.left = b.homeStyle.left;
@@ -143,7 +341,8 @@
     });
     activated = false;
     bodies = [];
-    if (hud) { hud.remove(); hud = null; resetButton = null; scoreEl = null; }
+    if (hud) { hud.remove(); hud = null; resetButton = null; scoreEl = null; bestEl = null; boardButton = null; }
+    if (board) board.classList.remove('visible');
   }
 
   // Abre el proyecto del icono y coloca su popup al lado de donde está ahora.
@@ -217,6 +416,10 @@
         samples: [{ x: e.clientX, y: e.clientY, t: performance.now() }]
       };
       b.vx = b.vy = 0;
+      b.throwing = false; // agarrarlo en el aire anula el tiro
+      document.body.classList.add('toy-grabbing');
+      // Al jugar se cierra el ranking, salvo que esté esperando unas iniciales.
+      if (board && board.classList.contains('visible') && !pendingScore) toggleBoard();
       el.setPointerCapture(e.pointerId);
     });
 
@@ -246,6 +449,7 @@
       if (!drag || drag.id !== e.pointerId) return;
       var b = drag.b;
       el.classList.remove('toy-dragging');
+      document.body.classList.remove('toy-grabbing');
       if (drag.moved) {
         suppressClick = true; // el clic que llega después no debe abrir el popup
         var s = drag.samples, first = s[0], last = s[s.length - 1];
@@ -257,6 +461,7 @@
           b.vy = limit((last.y - first.y) / dt);
         }
         b.settled = false;
+        if (Math.hypot(b.vx, b.vy) >= MIN_THROW_SPEED) { b.throwing = true; b.throwDist = 0; }
         showReset();
         if (!thrownOnce) { thrownOnce = true; track('toy_throw'); }
         if (onSignature(b) && Math.hypot(b.vx, b.vy) < 400) { b.vx = b.vy = 0; openProject(b, 'drop'); }
@@ -316,11 +521,13 @@
           b.spin = 0;
           b.sx = b.sy = 1;
           render(b);
+          if (b.throwing) finishThrow(b);
           if (b.moved && onSignature(b)) openProject(b, 'settle');
         }
         return;
       }
       anyMoving = true;
+      if (b.throwing) b.throwDist += speed * dt;
       b.x += b.vx * dt;
       b.y += b.vy * dt;
       b.vx *= decay;

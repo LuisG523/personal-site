@@ -185,6 +185,123 @@ footer {
   color: #333;
 }
 
+.toy-distance {
+  position: fixed;
+  transform: translate(-50%, -100%);
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: #333;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 13;
+  animation: toy-distance 1.6s ease-out forwards;
+}
+
+@keyframes toy-distance {
+  0% { opacity: 0; transform: translate(-50%, -80%); }
+  15% { opacity: 1; transform: translate(-50%, -110%); }
+  75% { opacity: 1; }
+  100% { opacity: 0; transform: translate(-50%, -180%); }
+}
+
+.toy-board {
+  display: none;
+  position: fixed;
+  left: calc(50% - 130px);
+  bottom: 4.5rem;
+  width: 260px;
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+  padding: 1rem 1.25rem;
+  z-index: 14;
+}
+
+.toy-board.visible {
+  display: block;
+}
+
+.toy-board h3 {
+  font-size: 1rem;
+  font-weight: 400;
+  color: #333;
+  margin-bottom: 0.25rem;
+}
+
+.toy-board-hint,
+.toy-board-note {
+  font-size: 0.78rem;
+  font-weight: 300;
+  color: #808080;
+  margin-bottom: 0.6rem;
+}
+
+.toy-board-list {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  font-size: 0.85rem;
+  color: #333;
+  padding-left: 1.6rem;
+  margin: 0;
+}
+
+.toy-board-list li {
+  padding: 0.1rem 0;
+}
+
+.toy-board-list li span:first-child {
+  display: inline-block;
+  width: 3.5em;
+}
+
+.toy-board-list li.mine {
+  font-weight: 700;
+}
+
+.toy-board-entry {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  color: #333;
+  margin-bottom: 0.75rem;
+}
+
+.toy-board-entry label {
+  width: 100%;
+}
+
+.toy-board-entry input {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  font-size: 1rem;
+  width: 4.5em;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 0.2rem 0.4rem;
+}
+
+.toy-board-entry button {
+  font-family: inherit;
+  font-size: 0.85rem;
+  background-color: #333;
+  color: #fff;
+  border: 1px solid #333;
+  border-radius: 6px;
+  padding: 0.25rem 0.8rem;
+  cursor: pointer;
+}
+
+body.toy-grabbing,
+.toy-hud,
+.toy-board-list {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+body.mode-agent .toy-board,
 body.mode-agent .toy-hud {
   display: none;
 }
@@ -715,6 +832,13 @@ footer a:hover {
   .easter-egg--mailbox {
     top: 12%;
     left: 8%;
+  }
+
+  .toy-board {
+    left: 1rem;
+    right: 1rem;
+    width: auto;
+    bottom: 3rem;
   }
 
   .easter-egg--venture {

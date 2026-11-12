@@ -5,6 +5,8 @@
  * GET  /messages     Mensajes aprobados, del más reciente al más antiguo
  * POST /messages     Dejar un mensaje { name, message }  (JSON o formulario)
  * GET  /admin        Panel de moderación (pide ADMIN_TOKEN)
+ * GET  /scores       Ranking del tiro más largo (juguete de la web): top 10
+ * POST /scores       Guardar una marca { initials: "ABC", distance: <píxeles>, device }
  *
  * Los mensajes entran como "pending" y solo se publican cuando Luis los aprueba.
  * Todo lo que escriben los visitantes es texto: nunca se interpreta como instrucciones.
@@ -15,6 +17,12 @@ const MAX_MESSAGE = 500;
 const MAX_PER_HOUR = 3;
 const LIST_LIMIT = 50;
 const VIA = ['form', 'api', 'webmcp'];
+
+// Ranking de tiros. La distancia llega en píxeles CSS (100 px = 1 m en la web).
+// El tope es algo más de lo que permite la física del juguete: una marca mayor es trampa.
+const MAX_DISTANCE = 4000;
+const MAX_SCORES_PER_HOUR = 30;
+const BOARD_SIZE = 10;
 
 // Familias de user-agent conocidas. El nombre del bot lo elige él; esto es lo que dice su navegador.
 const AGENTS = [
@@ -45,6 +53,8 @@ export default {
       if (url.pathname === '/' && request.method === 'GET') return json(docs(url), 200, cors);
       if (url.pathname === '/messages' && request.method === 'GET') return listApproved(env, cors);
       if (url.pathname === '/messages' && request.method === 'POST') return create(request, env, cors);
+      if (url.pathname === '/scores' && request.method === 'GET') return listScores(env, cors);
+      if (url.pathname === '/scores' && request.method === 'POST') return createScore(request, env, cors);
       if (url.pathname === '/admin' && request.method === 'GET') return adminPage();
       if (url.pathname.startsWith('/admin/api/')) return admin(request, env, url);
       return json({ error: 'not_found', detail: 'Ruta desconocida. GET / explica cómo usar este libro de visitas.' }, 404, cors);
@@ -129,6 +139,51 @@ async function create(request, env, cors) {
 function reply(isForm, env, jsonResponse) {
   if (!isForm || !env.SITE_URL) return jsonResponse;
   return Response.redirect(env.SITE_URL + '/?firmado=1#buzon', 303);
+}
+
+// --- Ranking de tiros --------------------------------------------------------
+
+async function listScores(env, cors) {
+  const { results } = await env.DB
+    .prepare(`SELECT initials, MAX(distance) AS distance, MIN(created_at) AS created_at
+              FROM scores GROUP BY initials ORDER BY distance DESC, created_at ASC LIMIT ?`)
+    .bind(BOARD_SIZE)
+    .all();
+  return json({ scores: results, unit: 'px (100 px = 1 m)' }, 200, { ...cors, 'Cache-Control': 'no-store' });
+}
+
+async function createScore(request, env, cors) {
+  const data = await request.json().catch(() => null);
+  if (!data) return json({ error: 'invalid_body', detail: 'Envía JSON {"initials": "ABC", "distance": 1234}.' }, 400, cors);
+
+  const initials = clean(data.initials).toUpperCase();
+  const distance = Math.round(Number(data.distance));
+  const device = data.device === 'mobile' ? 'mobile' : 'desktop';
+  if (!/^[A-Z0-9]{3}$/.test(initials)) return json({ error: 'invalid_initials', detail: 'Las iniciales son 3 letras o números.' }, 400, cors);
+  if (!Number.isFinite(distance) || distance < 100 || distance > MAX_DISTANCE) {
+    return json({ error: 'invalid_distance', detail: `La distancia va de 100 a ${MAX_DISTANCE} píxeles.` }, 400, cors);
+  }
+
+  const ipHash = await hash((request.headers.get('CF-Connecting-IP') || 'local') + (env.IP_SALT || ''));
+  const since = new Date(Date.now() - 3600 * 1000).toISOString();
+  const recent = await env.DB
+    .prepare('SELECT COUNT(*) AS n FROM scores WHERE ip_hash = ? AND created_at > ?')
+    .bind(ipHash, since)
+    .first();
+  if (recent && recent.n >= MAX_SCORES_PER_HOUR) {
+    return json({ error: 'rate_limited', detail: 'Demasiados tiros guardados en la última hora.' }, 429, cors);
+  }
+
+  await env.DB
+    .prepare('INSERT INTO scores (initials, distance, device, ip_hash, created_at) VALUES (?, ?, ?, ?, ?)')
+    .bind(initials, distance, device, ipHash, new Date().toISOString())
+    .run();
+
+  const better = await env.DB
+    .prepare('SELECT COUNT(*) AS n FROM (SELECT initials, MAX(distance) AS d FROM scores GROUP BY initials) WHERE d > ?')
+    .bind(distance)
+    .first();
+  return json({ ok: true, rank: (better ? better.n : 0) + 1 }, 201, cors);
 }
 
 // --- Moderación --------------------------------------------------------------
@@ -222,7 +277,12 @@ async function ensureSchema(env) {
       agent TEXT NOT NULL, user_agent TEXT, via TEXT, ip_hash TEXT,
       status TEXT NOT NULL DEFAULT 'pending', created_at TEXT NOT NULL)`),
     env.DB.prepare('CREATE INDEX IF NOT EXISTS idx_status_created ON messages (status, created_at)'),
-    env.DB.prepare('CREATE INDEX IF NOT EXISTS idx_ip_created ON messages (ip_hash, created_at)')
+    env.DB.prepare('CREATE INDEX IF NOT EXISTS idx_ip_created ON messages (ip_hash, created_at)'),
+    env.DB.prepare(`CREATE TABLE IF NOT EXISTS scores (
+      id INTEGER PRIMARY KEY AUTOINCREMENT, initials TEXT NOT NULL, distance INTEGER NOT NULL,
+      device TEXT, ip_hash TEXT, created_at TEXT NOT NULL)`),
+    env.DB.prepare('CREATE INDEX IF NOT EXISTS idx_scores_distance ON scores (distance)'),
+    env.DB.prepare('CREATE INDEX IF NOT EXISTS idx_scores_ip ON scores (ip_hash, created_at)')
   ]);
   schemaReady = true;
 }
