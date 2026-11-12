@@ -14,7 +14,7 @@
     href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400&display=swap"
   />
   <!-- Enlace a tu hoja de estilos -->
-  <link rel="stylesheet" href="styles.css?v=8" />
+  <link rel="stylesheet" href="styles.css?v=9" />
 
   <!-- Puerta para agentes: versión legible y datos estructurados -->
   <meta name="description" content="Luis G. Lopez-Cotelo, Madrid. Applied AI experiments. Agent-readable version at /llms.txt" />
@@ -100,6 +100,23 @@
       <h3>LLM Trading Bot</h3>
       <p>An autonomous crypto trading agent where an LLM makes every call. It reads price action, the Fear &amp; Greed Index, macro events and news, places limit orders with exchange-native stop-losses, and reviews its own trade history to rethink its strategy every week.</p>
       <p>Ran in production on Kraken with real money, until exchange fees started eating the profits. Retired with honours 🫡</p>
+    </div>
+
+    <!-- Easter egg: primer emprendimiento -->
+    <img
+      src="assets/first-venture.png"
+      alt="First venture"
+      class="easter-egg easter-egg--venture"
+      data-egg="first-venture"
+      data-popup="easter-egg-popup-venture"
+      onclick="document.getElementById('easter-egg-popup-venture').classList.toggle('visible')"
+    />
+
+    <div id="easter-egg-popup-venture" class="easter-egg-popup easter-egg-popup--venture">
+      <button class="easter-egg-close" onclick="document.getElementById('easter-egg-popup-venture').classList.remove('visible')">×</button>
+      <h3>First venture</h3>
+      <p>My first steps as a founder, in the world of market making. I looked after the data side of things.</p>
+      <p>It has taught me a ton, and I got to build it alongside some wonderful people 🪙</p>
     </div>
 
     <!-- Easter egg: buzón para agentes (guestbook.js) -->

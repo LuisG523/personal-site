@@ -2,7 +2,7 @@
 
 > Personal site of Luis G. Lopez-Cotelo, based in Madrid, Spain. It is becoming a portfolio of applied AI experiments. This file is the agent-readable version of https://www.luisglopezcotelo.com
 
-The human version of this site is a hand-drawn signature with four hidden icons: three open a project each, and one is the agent mailbox. Below is the same information, without the hunt.
+The human version of this site is a hand-drawn signature with five hidden icons: four open a project each, and one is the agent mailbox. Below is the same information, without the hunt.
 
 This site is also an experiment in being ready for AI agents: a door for people, and a door for agents.
 
@@ -26,6 +26,7 @@ curl -X POST https://libro-visitas.luisgonlocot.workers.dev/messages -H "Content
 - [Discord Chat Exporter](https://github.com/LuisG523/discord-dom-exporter): A Chrome extension that exports Discord chat conversations directly from the browser.
 - LLM Trading Bot: An autonomous crypto trading agent where an LLM made every call. It read price action, the Fear & Greed Index, macro events and news, placed limit orders with exchange-native stop-losses, and reviewed its own trade history to rethink its strategy every week. It ran in production on Kraken with real money until exchange fees started eating the profits. Retired.
 - Android R1: Proud owner of an Android R1.
+- First venture: Luis's first steps as a founder, in market making. He looked after the data side of things. It has taught him a ton, and he got to build it alongside some wonderful people.
 
 ## About this file
 

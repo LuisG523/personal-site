@@ -296,6 +296,19 @@ body.mode-agent .toy-hud {
   color: #333;
 }
 
+/* Primer emprendimiento (arriba, centrado) */
+.easter-egg--venture {
+  top: 12%;
+  left: calc(50% - 28px);
+  border-radius: 50%;
+}
+
+.easter-egg-popup--venture {
+  top: calc(12% + 70px);
+  left: calc(50% - 140px);
+  max-width: 280px;
+}
+
 /* Buzón para agentes */
 .easter-egg--mailbox {
   top: 18%;
@@ -702,6 +715,18 @@ footer a:hover {
   .easter-egg--mailbox {
     top: 12%;
     left: 8%;
+  }
+
+  .easter-egg--venture {
+    top: 20%;
+    left: calc(50% - 22px);
+  }
+
+  .easter-egg-popup--venture {
+    top: calc(20% + 56px);
+    left: 8%;
+    right: 8%;
+    max-width: none;
   }
 
   .easter-egg-popup--mailbox {
